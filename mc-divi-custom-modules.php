@@ -150,6 +150,20 @@ class MC_Divi_Custom_Modules {
             array( $this, 'filter_posts_callback' ), // Callback
             'mc-dcm-settings', // Page
             'mc_dcm_section' // Section           
+        );  
+        add_settings_field(
+            'breadcrumb', // ID
+            'Fil d\'ariane', // Title 
+            array( $this, 'breadcrumb_callback' ), // Callback
+            'mc-dcm-settings', // Page
+            'mc_dcm_section' // Section           
+        ); 
+        add_settings_field(
+            'button_down', // ID
+            'Bouton Bas', // Title 
+            array( $this, 'button_down_callback' ), // Callback
+            'mc-dcm-settings', // Page
+            'mc_dcm_section' // Section           
         );          
     }
 
@@ -187,6 +201,16 @@ class MC_Divi_Custom_Modules {
     public function filter_posts_callback()
     {   ?>
         <input type="checkbox" id="filter_posts" name="mc_dcm_option[filter_posts]" value="1" <?php isset($this->options['filter_posts'] ) ? checked( $this->options['filter_posts'], 1, true ) : '' ?> />
+    <?php  
+    }
+    public function breadcrumb_callback()
+    {   ?>
+        <input type="checkbox" id="breadcrumb" name="mc_dcm_option[breadcrumb]" value="1" <?php isset($this->options['breadcrumb'] ) ? checked( $this->options['breadcrumb'], 1, true ) : '' ?> />
+    <?php  
+    }
+    public function button_down_callback()
+    {   ?>
+        <input type="checkbox" id="button_down" name="mc_dcm_option[button_down]" value="1" <?php isset($this->options['button_down'] ) ? checked( $this->options['button_down'], 1, true ) : '' ?> />
     <?php  
     }
 }
