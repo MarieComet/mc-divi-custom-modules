@@ -27,7 +27,7 @@ function ButtonDown(){
 				$this->whitelisted_fields = array(
 					'button_url',
 					'url_new_window',
-					'button_rel',
+					'src_img',
 					'admin_label',
 					'module_id',
 					'module_class',
@@ -45,28 +45,6 @@ function ButtonDown(){
 						'selector' => '.et_pb_button_down.et_pb_module',
 						'no_space_before_selector' => true,
 					)
-				);
-
-				$this->advanced_options = array(
-					'button' => array(
-						'button' => array(
-							'label' => esc_html__( 'Bouton bas', 'et_builder' ),
-							'css' => array(
-								'main' => $this->main_css_element,
-								'plugin_main' => "{$this->main_css_element}.et_pb_module",
-							),
-						),
-					),
-				);
-			}
-
-			function get_rel_values() {
-				return array(
-					'bookmark',
-					'external',
-					'nofollow',
-					'noreferrer',
-					'noopener',
 				);
 			}
 
@@ -88,12 +66,14 @@ function ButtonDown(){
 						),
 						'description'       => esc_html__( 'Here you can choose whether or not your link opens in a new window', 'et_builder' ),
 					),
-					'button_rel' => array(
-						'label'           => esc_html__( 'Bouton bas Relationship', 'et_builder' ),
-						'type'            => 'multiple_checkboxes',
-						'option_category' => 'configuration',
-						'options'         => $this->get_rel_values(),
-						'description'     => et_get_safe_localization( __( "Specify the value of your link's <em>rel</em> attribute. The <em>rel</em> attribute specifies the relationship between the current document and the linked document.<br><strong>Tip:</strong> Search engines can use this attribute to get more information about a link.", 'et_builder' ) ),
+					'src_img' => array(
+						'label'              => esc_html__( 'URL de l\'icône', 'et_builder' ),
+						'type'               => 'upload',
+						'option_category'    => 'basic_option',
+						'upload_button_text' => esc_attr__( 'Upload an image', 'et_builder' ),
+						'choose_text'        => esc_attr__( 'Choose an Image', 'et_builder' ),
+						'update_text'        => esc_attr__( 'Set As Image', 'et_builder' ),
+						'description'        => esc_html__( 'Upload your desired image, or type in the URL to the image you would like to display.', 'et_builder' ),
 					),
 					'disabled_on' => array(
 						'label'           => esc_html__( 'Disable on', 'et_builder' ),
@@ -134,42 +114,43 @@ function ButtonDown(){
 				$module_id         = $this->shortcode_atts['module_id'];
 				$module_class      = $this->shortcode_atts['module_class'];
 				$button_url        = $this->shortcode_atts['button_url'];
-				$button_rel        = $this->shortcode_atts['button_rel'];
 				$url_new_window    = $this->shortcode_atts['url_new_window'];
+				$src_img           = $this->shortcode_atts['src_img'];
 
 				// Nothing to output if neither Bouton bas Text nor Bouton bas URL defined
 				if ( '' === $button_url ) {
 					return;
 				}
 
-				$rel_attributes = array();
-
-				if ( $button_rel ) {
-					$rel_values    = $this->get_rel_values();
-					$selected_rels = explode( '|', $button_rel );
-
-					foreach ( $selected_rels as $index => $selected_rel ) {
-						if ( ! $selected_rel || 'off' === $selected_rel ) {
-							continue;
-						}
-
-						$rel_attributes[] = $rel_values[ $index ];
-					}
-				}
-
 				$module_class = ET_Builder_Element::add_module_order_class( $module_class, $function_name );
 
-				$module_class .= " et_pb_module et_pb_bg_layout_{$background_layout}";
-
+				$module_class .= " et_pb_module";
 				$output = sprintf(
-					'<div class="et_pb_button_module_wrapper et_pb_module%9$s">
-						<a class="et_pb_button_down%3$s%5$s" href="%1$s"%2$s%4$s></a>
+					'<div class="et_pb_button_down_module_wrapper et_pb_module">
+						<style>
+						body #page-container .et_pb_button_down_module_wrapper > a {
+							display: inline-block;
+							margin: 0;
+							padding: 0;
+							width: 100%%;
+							text-align: center;
+							margin-top: -25px;
+						}
+						body #page-container a.et_pb_button_down:before {
+							display: none;
+						}
+						body #page-container .et_pb_button_down_module_wrapper > a img {
+							max-width: 50px;
+						}
+						</style>
+						<a class="et_pb_button_down%3$s%4$s" href="%1$s"%2$s><img %5$s /></a>
 					</div>',
 					esc_url( $button_url ),
 					( 'on' === $url_new_window ? ' target="_blank"' : '' ),
 					( '' !== $module_id ? sprintf( ' id="%1$s"', esc_attr( $module_id ) ) : '' ),
 					( '' !== $module_class ? sprintf( ' %1$s', esc_attr( $module_class ) ) : '' ),
-					$rel_attributes ? sprintf( ' rel="%1$s"', esc_attr( implode( ' ', $rel_attributes ) ) ) : '',
+					( '' !== $src_img ? sprintf( ' src="%1$s"', esc_url( $src_img ) ) : 'src="'.plugin_dir_url( __FILE__ ).'arrow-down.png"' )
+
 				);
 
 				return $output;
