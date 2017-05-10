@@ -101,6 +101,7 @@ class MC_Divi_Custom_Modules {
 	
 	/**
      * Register and add settings
+     *  Create a checkbox for each module
      */
     public function mc_dcm_settings()
     {        
@@ -220,6 +221,9 @@ $my_settings_page = new MC_Divi_Custom_Modules();
 
 add_action('after_setup_theme', 'include_modules');
 
+/**
+ * Include each module, please note the option, the folder and the file should have the same name
+ */
 function include_modules() {
 	$options = get_option( 'mc_dcm_option' );
 
