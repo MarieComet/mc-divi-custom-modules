@@ -1,0 +1,51 @@
+.et_pb_flipbox {
+	position: relative;
+	background-repeat: no-repeat;
+	background-size: cover;
+	min-height: 1px;
+	color: #fff;
+	padding: 30px;
+}
+.et_pb_flipbox:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.et_pb_flipbox div.face, .et_pb_flipbox div.back {
+	text-align: center;
+	-webkit-transition: opacity 1s;
+	transition: opacity 1s;
+	position: absolute;
+	width: 100%;
+	padding: 5px;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	font-size: 1.5em;
+	line-height: 1.5em;
+    height: auto; 
+    margin: auto;
+}
+.et_pb_flipbox div.back {
+	opacity: 0;
+}
+.et_pb_flipbox:hover .face {
+	opacity: 0;
+}
+.et_pb_flipbox:hover .back {
+	opacity: 1;
+}
+.et_pb_flipbox div.face p {
+	display: inline-block;	
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.et_pb_flipbox div.face p, .et_pb_flipbox div.back p {
+    word-wrap: break-word;
+    padding: 15px 20px;
+}

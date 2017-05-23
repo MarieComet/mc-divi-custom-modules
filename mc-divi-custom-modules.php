@@ -165,7 +165,14 @@ class MC_Divi_Custom_Modules {
             array( $this, 'button_down_callback' ), // Callback
             'mc-dcm-settings', // Page
             'mc_dcm_section' // Section           
-        );          
+        );  
+        add_settings_field(
+            'flip_box', // ID
+            'Flip Box', // Title 
+            array( $this, 'flip_box_callback' ), // Callback
+            'mc-dcm-settings', // Page
+            'mc_dcm_section' // Section           
+        );         
     }
 
     /** 
@@ -212,6 +219,11 @@ class MC_Divi_Custom_Modules {
     public function button_down_callback()
     {   ?>
         <input type="checkbox" id="button_down" name="mc_dcm_option[button_down]" value="1" <?php isset($this->options['button_down'] ) ? checked( $this->options['button_down'], 1, true ) : '' ?> />
+    <?php  
+    }
+    public function flip_box_callback()
+    {   ?>
+        <input type="checkbox" id="flip_box" name="mc_dcm_option[flip_box]" value="1" <?php isset($this->options['flip_box'] ) ? checked( $this->options['flip_box'], 1, true ) : '' ?> />
     <?php  
     }
 }
