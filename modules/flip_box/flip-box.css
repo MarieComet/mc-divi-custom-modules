@@ -5,6 +5,7 @@
 	min-height: 1px;
 	color: #fff;
 	padding: 30px;
+	min-height: 200px;
 }
 .et_pb_flipbox:before {
 	content: '';
@@ -47,5 +48,5 @@
 }
 .et_pb_flipbox div.face p, .et_pb_flipbox div.back p {
     word-wrap: break-word;
-    padding: 15px 20px;
+    padding: 30px 20px;
 }

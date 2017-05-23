@@ -20,14 +20,29 @@ function MC_Flip_Box() {
 				$this->whitelisted_fields = array(
 					'face_text',
 					'back_text',
+					'link',
+					'show_button',
 					'bg_color',
 					'bg_img',
+					'text_color',
 					'admin_label',
 					'module_id',
 					'module_class',
 				);
 
+				$this->fields_defaults = array(
+					'show_button'         => array( 'on' )
+				);
+
 				$this->main_css_element = '%%order_class%%';
+
+				$this->options_toggles = array(
+					'general'  => array(
+						'toggles' => array(
+							'main_content' => esc_html__( 'Content', 'et_builder' ),
+						),
+					),
+				);
 
 				wp_register_style( 'flipbox-css', plugin_dir_url( __FILE__ ) . 'flip-box.css' );
 				wp_register_script( 'flip-js', plugin_dir_url( __FILE__ ) . 'flip-js.js', array('jquery') );
@@ -52,6 +67,23 @@ function MC_Flip_Box() {
 						'option_category' => 'basic_option',
 						'description'     => esc_html__( 'Texte qui apparait au survol', 'et_builder' ),
 					),
+					'link' => array(
+						'label'           => esc_html__( 'URL cible', 'et_builder' ),
+						'type'            => 'text',
+						'option_category' => 'basic_option',
+						'description'     => esc_html__( 'URL ouverte au click', 'et_builder' ),
+					),
+					'show_button' => array(
+						'label'             => esc_html__( 'Afficher l\'arrière comme un bouton', 'et_builder' ),
+						'type'              => 'select',
+						'option_category'   => 'basic_option',
+						'options'           => array(
+							'on'  => esc_html__( 'Oui', 'et_builder' ),
+							'off' => esc_html__( 'Non', 'et_builder' ),
+						),
+						'toggle_slug'        => 'main_content',
+						'description'        => esc_html__( 'Si oui affichera l\'arrière comme un bouton', 'et_builder' ),
+					),
 					'bg_color' => array(
 						'label'             => esc_html__( 'Couleur de fond', 'et_builder' ),
 						'type'              => 'color-alpha',
@@ -66,6 +98,12 @@ function MC_Flip_Box() {
 						'choose_text'        => esc_attr__( 'Choose an Image', 'et_builder' ),
 						'update_text'        => esc_attr__( 'Set As Image', 'et_builder' ),
 						'description'        => esc_html__( 'Upload your desired image, or type in the URL to the image you would like to display.', 'et_builder' ),
+					),
+					'text_color' => array(
+						'label'             => esc_html__( 'Couleur du texte', 'et_builder' ),
+						'type'              => 'color-alpha',
+						'custom_color'      => true,
+						'description'       => esc_html__( 'Couleur du texte', 'et_builder' ),
 					),
 					'disabled_on' => array(
 						'label'           => esc_html__( 'Disable on', 'et_builder' ),
@@ -108,8 +146,11 @@ function MC_Flip_Box() {
 				$module_class         = $this->shortcode_atts['module_class'];
 				$face_text				= $this->shortcode_atts['face_text'];
 				$back_text				= $this->shortcode_atts['back_text'];
+				$link				= $this->shortcode_atts['link'];
+				$show_button		= $this->shortcode_atts['show_button'];
 				$bg_color				= $this->shortcode_atts['bg_color'];
 				$bg_img				= $this->shortcode_atts['bg_img'];
+				$text_color				= $this->shortcode_atts['text_color'];
 
 				$module_class = ET_Builder_Element::add_module_order_class( $module_class, $function_name );
 
@@ -135,24 +176,38 @@ function MC_Flip_Box() {
 					) );
 				}
 
+				if ( '' !== $text_color ) {
+					ET_Builder_Element::set_style( $function_name, array(
+						'selector'    => '%%order_class%% .box a',
+						'declaration' => sprintf(
+							'color: %1$s;',
+							esc_html($text_color)
+						),
+					) );
+				}
+
 				$class = " et_pb_module";
 
 				$output = sprintf(
 					'<div%4$s class="et_pb_flipbox%3$s%5$s">
 						<div class="box">
-							<div class="face front">
-								<p>%1$s</p>
-							</div>
-							<div class="face back">
-								<p>%2$s</p>						
-							</div>			
+							<a href="%6$s">
+								<div class="face front">
+									<p>%1$s</p>
+								</div>
+								<div class="face back">
+									<p class="%7$s">%2$s</p>						
+								</div>			
+							</a>
 						</div>		
 					</div><!-- .et_pb_flipbox -->',
 					esc_html($face_text),
 					esc_html($back_text),
 					esc_attr( $class ),
 					( '' !== $module_id ? sprintf( ' id="%1$s"', esc_attr( $module_id ) ) : '' ),
-					( '' !== $module_class ? sprintf( ' %1$s', esc_attr( $module_class ) ) : '' )
+					( '' !== $module_class ? sprintf( ' %1$s', esc_attr( $module_class ) ) : '' ),
+					esc_attr( $link ),
+					( 'on' === $show_button ? sprintf( ' %1$s', esc_attr( 'et_pb_button' ) ) : '' )
 				);
 
 				return $output;
