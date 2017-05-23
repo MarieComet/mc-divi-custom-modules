@@ -139,6 +139,13 @@ class MC_Divi_Custom_Modules {
             'mc_dcm_section' // Section           
         ); 
         add_settings_field(
+            'carousel_text', // ID
+            'Carousel texte', // Title 
+            array( $this, 'carousel_text_callback' ), // Callback
+            'mc-dcm-settings', // Page
+            'mc_dcm_section' // Section           
+        );
+        add_settings_field(
             'custom_slider', // ID
             'Slider Posts', // Title 
             array( $this, 'custom_slider_callback' ), // Callback
@@ -199,6 +206,11 @@ class MC_Divi_Custom_Modules {
     public function carousel_callback()
     {	?>
     	<input type="checkbox" id="carousel" name="mc_dcm_option[carousel]" value="1" <?php isset($this->options['carousel'] ) ? checked( $this->options['carousel'], 1, true ) : '' ?> />
+    <?php  
+    }
+    public function carousel_text_callback()
+    {   ?>
+        <input type="checkbox" id="carousel_text" name="mc_dcm_option[carousel_text]" value="1" <?php isset($this->options['carousel_text'] ) ? checked( $this->options['carousel_text'], 1, true ) : '' ?> />
     <?php  
     }
     public function custom_slider_callback()

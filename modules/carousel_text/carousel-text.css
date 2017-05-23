@@ -1,0 +1,10 @@
+.slick-carousel-testi .et_pb_slide_content {
+	text-align: center;
+}
+.slick-carousel-testi .et_pb_slide_content p.name {
+	font-weight: bold;
+	padding: 0.5em 0;
+}
+.slick-carousel-testi .slick-prev:before, .slick-carousel-testi .slick-next:before {
+    color: #848484;
+}
