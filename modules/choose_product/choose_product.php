@@ -50,7 +50,7 @@ function et_builder_include_products_option( $args = array() ) {
 	return apply_filters( 'et_builder_include_products_option', $output );
 }
 
-function MC_Custom_Module() {
+function MC_Choose_Product() {
 	if(class_exists("ET_Builder_Module")){
 		class ET_Builder_Module_Product_Choose extends ET_Builder_Module {
 			function init() {
@@ -393,4 +393,4 @@ function MC_Custom_Module() {
 	}
 }
 
-add_action('et_builder_ready', 'MC_Custom_Module');
+add_action('et_builder_ready', 'MC_Choose_Product');
