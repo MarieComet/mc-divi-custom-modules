@@ -196,7 +196,7 @@ function MC_Title_Module() {
                     ET_Builder_Element::set_style( $function_name, array(
                         'selector'    => '%%order_class%% %2$s;',
                         'declaration' => sprintf(
-                            'font-size: %1$s;px',
+                            'font-size: %1$s;',
                             esc_html( $title_font_size ),
                             esc_html($title_level)
                         ),
