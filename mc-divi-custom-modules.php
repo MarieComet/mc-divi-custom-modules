@@ -109,14 +109,20 @@ class MC_Divi_Custom_Modules {
             'mc_dcm_group', // Option group
             'mc_dcm_option' // Option name
         );
-
+        
         add_settings_section(
             'mc_dcm_section', // ID
             'Modules', // Title
             array( $this, 'print_section_info' ), // Callback
             'mc-dcm-settings' // Page
         );  
-
+        add_settings_field(
+            'title', // ID
+            'Titre', // Title 
+            array( $this, 'title_callback' ), // Callback
+            'mc-dcm-settings', // Page
+            'mc_dcm_section' // Section           
+        );
         add_settings_field(
             'choose_post', // ID
             'Articles choisis', // Title 
@@ -179,7 +185,14 @@ class MC_Divi_Custom_Modules {
             array( $this, 'flip_box_callback' ), // Callback
             'mc-dcm-settings', // Page
             'mc_dcm_section' // Section           
-        );         
+        );   
+        add_settings_field(
+            'custom_blog', // ID
+            'Blog PS', // Title 
+            array( $this, 'custom_blog_callback' ), // Callback
+            'mc-dcm-settings', // Page
+            'mc_dcm_section' // Section           
+        );      
     }
 
     /** 
@@ -193,6 +206,11 @@ class MC_Divi_Custom_Modules {
     /** 
      * Get the settings option array and print one of its values
      */
+    public function title_callback()
+    {   ?>
+        <input type="checkbox" id="title" name="mc_dcm_option[title]" value="1" <?php isset($this->options['title'] ) ? checked( $this->options['title'], 1, true ) : '' ?> />
+    <?php  
+    }
     public function choose_post_callback()
     {	?>
     	<input type="checkbox" id="choose_post" name="mc_dcm_option[choose_post]" value="1" <?php isset($this->options['choose_post'] ) ? checked( $this->options['choose_post'], 1, true ) : '' ?> />
@@ -238,6 +256,11 @@ class MC_Divi_Custom_Modules {
         <input type="checkbox" id="flip_box" name="mc_dcm_option[flip_box]" value="1" <?php isset($this->options['flip_box'] ) ? checked( $this->options['flip_box'], 1, true ) : '' ?> />
     <?php  
     }
+    public function custom_blog_callback()
+    {   ?>
+        <input type="checkbox" id="custom_blog" name="mc_dcm_option[custom_blog]" value="1" <?php isset($this->options['custom_blog'] ) ? checked( $this->options['custom_blog'], 1, true ) : '' ?> />
+    <?php  
+    }
 }
 
 if( is_admin() )
@@ -250,8 +273,9 @@ add_action('after_setup_theme', 'include_modules');
  */
 function include_modules() {
 	$options = get_option( 'mc_dcm_option' );
-
-    foreach($options as $option => $value) {
-    	require_once(plugin_dir_path( __FILE__ ) . 'modules/'. $option .'/'. $option .'.php');
+    if($options) {
+        foreach($options as $option => $value) {
+        	require_once(plugin_dir_path( __FILE__ ) . 'modules/'. $option .'/'. $option .'.php');
+        }
     }
 }
